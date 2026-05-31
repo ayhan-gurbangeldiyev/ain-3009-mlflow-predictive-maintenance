@@ -1,5 +1,10 @@
 # Predictive Maintenance — End-to-End ML Lifecycle on Azure ML + MLflow
 
+![MLflow](https://img.shields.io/badge/MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)
+![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-017CEE?style=for-the-badge&logo=apacheairflow&logoColor=white)
+![Azure ML](https://img.shields.io/badge/Azure%20Machine%20Learning-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
+![Scikit--learn](https://img.shields.io/badge/Scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
+
 **Course:** AIN-3009 Delivering AI Applications with MLOps
 **Term Project:** Development and Evaluation of a Machine Learning Lifecycle Management System using MLflow
 
@@ -43,7 +48,7 @@ Monitoring (drift simulation → metrics logged back to Azure ML)
 ## Project Structure
 
 ```text
-PRJ-Azure-PredictiveMaintenance/
+PRJ-AyhanGurbangeldiyev-2020053/
 ├── azure/
 │   ├── setup_workspace.sh      # Provision RG + workspace, write .env
 │   └── deploy_endpoint.py      # Deploy/delete managed online endpoint
@@ -57,8 +62,8 @@ PRJ-Azure-PredictiveMaintenance/
 │   ├── serve_test.py           # Call the live endpoint
 │   └── monitor_model.py        # Drift simulation + metric logging
 ├── reports/                    # CSV/JSON outputs of every stage
-├── presentation/               # 5-minute deck + speaker notes
-├── screenshots/                # Azure CLI/Studio proof notes
+├── Presentation.pptx           # Final 5-minute presentation
+├── screenshots/                # MLflow, Airflow, metrics, and registry evidence
 ├── requirements.txt
 └── README.md
 ```
@@ -135,8 +140,8 @@ online endpoint:
 
 The endpoint credentials are kept only in the local ignored `.env` file. The
 submission package includes `.env.example`, not `.env`, so secrets are not
-submitted. See `screenshots/azure_evidence.md` for the captured CLI evidence and
-the Azure Studio screenshots to collect for presentation.
+submitted. The submission package includes MLflow, Airflow, model registry, monitoring, and
+metric evidence in the `screenshots/` folder.
 
 ## Cost Note
 
