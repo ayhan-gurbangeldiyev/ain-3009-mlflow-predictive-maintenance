@@ -14,6 +14,20 @@ used for experiment tracking, hyperparameter tuning, the model registry, and
 monitoring, with **Azure Machine Learning** acting as the remote MLflow tracking
 server, model registry, and **Managed Online Endpoint** for real-time serving.
 
+## Assignment Coverage
+
+| Requirement | How this project satisfies it |
+|---|---|
+| Domain and dataset | Industrial predictive maintenance with the AI4I 2020 sensor dataset |
+| Experiment tracking | MLflow logs parameters, metrics, artifacts, reports, and model files |
+| Model training | Logistic Regression, Random Forest, and Gradient Boosting baselines |
+| Hyperparameter tuning | Optuna tuning with 20 MLflow-tracked trials |
+| Model registry | `PredictiveMaintenanceModel` registered and promoted through lifecycle stages |
+| Deployment | Azure ML Managed Online Endpoint deployment scripts and evidence |
+| Monitoring | Simulated incoming batches with drift metrics logged back to MLflow |
+| Pipeline automation | Airflow DAG: validate → train → tune → register → monitor |
+| Report | Detailed methodology and results in `reports/project_report.md` |
+
 ## Why Azure ML
 
 The Azure ML workspace *is* an MLflow tracking server. By pointing the standard
@@ -45,6 +59,45 @@ Managed Online Endpoint ── REST /score (real-time prediction)
 Monitoring (drift simulation → metrics logged back to Azure ML)
 ```
 
+## System Workflow
+
+1. **Dataset preparation:** load AI4I 2020, remove leakage columns, split data.
+2. **Preprocessing:** scale numeric sensor features and one-hot encode machine type.
+3. **Training:** compare multiple scikit-learn models and log every run to MLflow.
+4. **Tuning:** optimize the selected model with Optuna and track every trial.
+5. **Registry:** register the best model as a versioned MLflow/Azure ML model.
+6. **Deployment:** deploy the production model as an Azure ML online endpoint.
+7. **Monitoring:** simulate incoming drifted batches and log performance changes.
+8. **Orchestration:** Airflow represents the lifecycle as a repeatable DAG.
+
+## Visual Evidence
+
+### MLflow experiment tracking
+
+![MLflow experiment runs](screenshots/01_mlflow_experiments_runs.png)
+
+### Model registry and production version
+
+![MLflow model registry](screenshots/03_mlflow_model_registry.png)
+
+![MLflow model version](screenshots/03_mlflow_model_version.png)
+
+### Airflow pipeline automation
+
+![Airflow DAG success view](screenshots/07_airflow_predmaint_graph.png)
+
+### Model comparison and tuning results
+
+![Model comparison metrics](screenshots/12_fig_model_comparison_metrics.png)
+
+![Optuna tuning metrics](screenshots/13_fig_optuna_tuning_metrics.png)
+
+### Production monitoring and drift
+
+![Drift monitoring metrics](screenshots/16_fig_drift_monitoring_metrics.png)
+
+![MLflow monitoring run](screenshots/04_mlflow_monitoring_run.png)
+
 ## Project Structure
 
 ```text
@@ -62,7 +115,6 @@ PRJ-AyhanGurbangeldiyev-2020053/
 │   ├── serve_test.py           # Call the live endpoint
 │   └── monitor_model.py        # Drift simulation + metric logging
 ├── reports/                    # CSV/JSON outputs of every stage
-├── Presentation.pptx           # Final 5-minute presentation
 ├── screenshots/                # MLflow, Airflow, metrics, and registry evidence
 ├── requirements.txt
 └── README.md
@@ -128,7 +180,7 @@ Monitoring shows ROC-AUC degrading from ~0.91 to ~0.77 across six increasingly
 drifted batches, while the predicted failure rate inflates from 4% to 37% — the
 signal a retraining trigger would watch.
 
-## Azure Evidence
+## Deployment Evidence
 
 Azure ML was used for the remote MLflow tracking server, registry, and managed
 online endpoint:
@@ -140,7 +192,7 @@ online endpoint:
 
 The endpoint credentials are kept only in the local ignored `.env` file. The
 submission package includes `.env.example`, not `.env`, so secrets are not
-submitted. The submission package includes MLflow, Airflow, model registry, monitoring, and
+submitted. The repository includes MLflow, Airflow, model registry, monitoring, and
 metric evidence in the `screenshots/` folder.
 
 ## Cost Note
