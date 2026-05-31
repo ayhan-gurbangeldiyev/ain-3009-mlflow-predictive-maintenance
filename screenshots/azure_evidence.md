@@ -43,3 +43,16 @@ Add Azure ML Studio screenshots here if the presentation requires visual proof:
 - `04_endpoint.png`: `predmaint-endpoint` deployment status
 
 Do not include endpoint keys or `.env` contents in screenshots.
+
+## Local MLflow Dashboard Screenshots
+
+Generated on 2026-05-31 from the local fallback MLflow store:
+
+- `01_mlflow_experiments_runs.png`: experiment run list with baseline, tuning,
+  and monitoring runs
+- `02_mlflow_best_run.png`: best Optuna parent run with metrics and registered
+  model link
+- `03_mlflow_model_registry.png`: registered model overview
+- `03_mlflow_model_version.png`: registered model version 1 with Production
+  stage
+- `04_mlflow_monitoring_run.png`: monitoring run logged with drift metrics
