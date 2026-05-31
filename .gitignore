@@ -6,5 +6,6 @@ mlflow.db
 mlruns/
 data/*.zip
 PRJ-*.zip
+outputs/
 .DS_Store
 screenshots/.DS_Store
