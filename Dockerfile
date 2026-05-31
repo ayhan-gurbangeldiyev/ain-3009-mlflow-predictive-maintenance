@@ -1,6 +1,6 @@
 # Container image for the FastAPI serving layer (course week 4: Docker).
 # Build:  docker build -t predmaint-api .
-# Run:    docker run -p 8000:8000 -e API_KEY=secret \
+# Run:    docker run -p 8000:8000 -e API_KEY=change-me \
 #               -v "$PWD/mlruns:/app/mlruns" -v "$PWD/mlflow.db:/app/mlflow.db" \
 #               predmaint-api
 FROM python:3.11-slim

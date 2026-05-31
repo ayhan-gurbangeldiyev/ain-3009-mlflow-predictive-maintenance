@@ -6,7 +6,7 @@ the course material on REST/FastAPI/OpenAPI (week 2) and API security
 Interactive OpenAPI docs are served at ``/docs``.
 
 Run locally:
-    PYTHONPATH=src API_KEY=secret-key .venv/bin/uvicorn api_service:app --port 8000
+    PYTHONPATH=src API_KEY=change-me .venv/bin/uvicorn api_service:app --port 8000
 """
 
 from __future__ import annotations
