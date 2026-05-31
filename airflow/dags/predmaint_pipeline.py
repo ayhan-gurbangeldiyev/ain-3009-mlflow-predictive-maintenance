@@ -11,7 +11,7 @@ Deployment:
     DAGS_FOLDER here). Set the two environment variables below so the tasks use
     the project's virtualenv and root:
 
-        PROJECT_HOME=/Users/ayhan/Dersler/MLOps/PRJ-Azure-PredictiveMaintenance
+        PROJECT_HOME=/path/to/PRJ-AyhanGurbangeldiyev-2020053
         VENV_PYTHON=$PROJECT_HOME/.venv/bin/python
 
 Trigger it manually from the Airflow UI or with `airflow dags trigger`.
@@ -21,13 +21,18 @@ from __future__ import annotations
 
 import os
 from datetime import datetime, timedelta
+from pathlib import Path
 
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 
+# Default to the repository root based on this DAG file location.
+# This avoids using a hardcoded local path from the developer's computer.
+DEFAULT_PROJECT_HOME = Path(__file__).resolve().parents[2]
+
 PROJECT_HOME = os.getenv(
     "PROJECT_HOME",
-    "/Users/ayhan/Dersler/MLOps/PRJ-Azure-PredictiveMaintenance",
+    str(DEFAULT_PROJECT_HOME),
 )
 VENV_PYTHON = os.getenv("VENV_PYTHON", f"{PROJECT_HOME}/.venv/bin/python")
 
