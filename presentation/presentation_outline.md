@@ -1,9 +1,10 @@
-# Presentation Outline — 5 minutes, 7 slides
+# Presentation Outline — 5 minutes, 8 slides
 
-1. **Title & Goal** — Predictive Maintenance: end-to-end ML lifecycle on Azure ML + MLflow. Predict machine failure from sensor readings.
-2. **Dataset & Framing** — AI4I 2020, 10,000 rows, 3.4% failure rate, leakage columns dropped, ROC-AUC/PR-AUC/recall over accuracy.
-3. **Architecture** — Local training/tuning logs to Azure ML as the MLflow tracking server; Azure ML also hosts the registry and managed endpoint.
-4. **Experiments & Tuning** — Baselines plus Optuna random-forest tuning; every run/trial logged with params, metrics, artifacts, and model.
-5. **Registry & Deployment** — Best model registered as `PredictiveMaintenanceModel` v1, promoted Staging to Production, deployed to `predmaint-endpoint`.
-6. **Monitoring** — Six drifting batches logged back to MLflow; model quality falls as sensor drift grows, creating a retraining signal.
-7. **Takeaways** — Lifecycle management matters more than a single model; Azure credit was used for tracking, registry, and endpoint while training stayed local to control cost.
+1. **Cover / Identity** — Predictive Maintenance: End-to-End ML Lifecycle on Azure ML + MLflow. Course: AIN-3009 Delivering AI Applications with MLOps. Instructor: Dr. Gökşin Bakır. Student: Ayhan Gurbangeldiyev, 2020053.
+2. **Project Objective** — Map the assignment requirements: experiment tracking, training/tuning, deployment, monitoring, and model registry.
+3. **Dataset & Problem Framing** — AI4I 2020, 10,000 telemetry records, binary `Machine failure`, 3.4% failure rate, leakage columns removed.
+4. **Data Preparation & EDA** — StandardScaler, OneHotEncoder, scikit-learn Pipeline, feature distributions, correlation heatmap.
+5. **Architecture** — Local training/tuning logs to Azure ML as the remote MLflow tracking server; Azure ML hosts registry and managed endpoint.
+6. **Training, Tracking & Tuning** — Baseline models, MLflow logging, Optuna 20 trials, best CV ROC-AUC 0.974, recall 0.44 to 0.77.
+7. **Registry, Deployment & Pipeline Automation** — `PredictiveMaintenanceModel` v1, Staging to Production, `predmaint-endpoint` Succeeded, Airflow DAG.
+8. **Monitoring & Conclusion** — Drift simulation, metric degradation, retraining signal, final course-objective checklist.

@@ -1,48 +1,53 @@
 # Speaker Script — ~5 minutes
 
-**Slide 1 — Title & Goal (30s).**
-"Hi, I'm Ayhan. This project builds an end-to-end ML lifecycle for predictive
-maintenance using MLflow and Azure Machine Learning. The goal is to predict
-machine failure from sensor readings, then manage the model through tracking,
-tuning, registry, deployment, and monitoring."
+**Slide 1 — Cover / Identity (20s).**
+"Hi, I'm Ayhan Gurbangeldiyev. This is my AIN-3009 MLOps term project for Dr.
+Gökşin Bakır. The project is Predictive Maintenance: an end-to-end ML lifecycle
+managed with MLflow and Azure Machine Learning."
 
-**Slide 2 — Dataset & Framing (45s).**
-"I used the AI4I 2020 predictive-maintenance dataset with 10,000 machine
-telemetry rows. The target is `Machine failure`, but only 3.4% of rows are
-positive, so accuracy is misleading. I removed the per-failure-mode columns
-because they leak the label, and I evaluate mainly with ROC-AUC, PR-AUC, recall,
-and F1."
+**Slide 2 — Project Objective (35s).**
+"The assignment asks for more than a trained model. We need to demonstrate
+experiment tracking, model training and tuning, deployment, monitoring, and model
+registry lifecycle. I use this slide as the checklist for the whole presentation:
+each following section maps to one of these requirements."
 
-**Slide 3 — Architecture (45s).**
-"Azure ML is the remote MLflow server. The code runs locally for training and
-tuning to avoid unnecessary compute cost, but `mlflow.set_tracking_uri` points to
-the Azure ML workspace. That means experiments, artifacts, registered models, and
-the managed endpoint are all visible in Azure ML Studio."
+**Slide 3 — Dataset & Problem Framing (40s).**
+"I used the AI4I 2020 predictive-maintenance dataset with 10,000 telemetry
+records. The target is binary machine failure. The important issue is class
+imbalance: only 3.4 percent of records are failures, so accuracy alone is
+misleading. I also removed the failure-mode columns because they leak the label."
 
-**Slide 4 — Experiments & Tuning (60s).**
-"I trained logistic regression, random forest, and gradient boosting baselines.
-Each run logs parameters, six metrics, a confusion matrix, a classification
-report, and the serialized scikit-learn pipeline. Then I tuned a random forest
-with Optuna for 20 trials, and every trial is a nested MLflow run. The best
-configuration reached about 0.974 cross-validated ROC-AUC and improved recall
-from 0.44 to around 0.77."
+**Slide 4 — Data Preparation & EDA (40s).**
+"For preprocessing, numeric sensor features are scaled and machine type is
+one-hot encoded. This preprocessing is bundled with the estimator inside a
+scikit-learn Pipeline, so serving uses the same transformations as training. The
+EDA plots show that failure and non-failure cases separate in some sensor
+patterns, especially torque, speed, temperature, and tool wear."
 
-**Slide 5 — Registry & Deployment (60s).**
-"The best run is selected by ROC-AUC and registered as
-`PredictiveMaintenanceModel` version 1. The script promotes it through Staging
-and Production, giving a clean lifecycle state instead of relying on a local file
-path. The production model is deployed to an Azure ML Managed Online Endpoint
-named `predmaint-endpoint`, which was verified as successfully provisioned."
+**Slide 5 — Architecture (40s).**
+"The architecture is local training with cloud lifecycle management. Training and
+tuning run locally to control cost. MLflow points to the Azure ML workspace, so
+runs, metrics, artifacts, registered models, and endpoint state are managed in
+Azure. This is where the Azure credit was used: tracking, registry, and managed
+endpoint deployment."
 
-**Slide 6 — Monitoring (45s).**
-"For monitoring, I simulate six incoming batches with progressively stronger
-sensor drift. The model's ROC-AUC and F1 drop while the predicted failure rate
-inflates. Those trends are logged back to MLflow with a batch step, showing the
-kind of signal that would trigger retraining in production."
+**Slide 6 — Training, Tracking & Tuning (50s).**
+"I trained three baseline models: logistic regression, random forest, and
+gradient boosting. Each run logs parameters, metrics, reports, confusion matrix,
+and the model artifact to MLflow. Then I tuned a random forest with Optuna for 20
+trials. The best cross-validated ROC-AUC is about 0.974, and recall improves from
+0.44 to around 0.77."
 
-**Slide 7 — Takeaways (35s).**
-"The main takeaway is that MLOps is the lifecycle, not just the model. MLflow
-tracks the experiments, Azure ML makes the tracking and registry shareable, the
-endpoint demonstrates serving, and monitoring closes the loop. Azure credit was
-used where it matters most for the course: tracking, registry, and managed
-deployment, while local training kept cost low."
+**Slide 7 — Registry, Deployment & Pipeline Automation (45s).**
+"The best run is registered as `PredictiveMaintenanceModel` version 1 and
+promoted through Staging and Production. The model is deployed through an Azure
+ML Managed Online Endpoint named `predmaint-endpoint`, verified as Succeeded. I
+also added an Airflow DAG to orchestrate the pipeline: validate, train, tune,
+register, and monitor."
+
+**Slide 8 — Monitoring & Conclusion (35s).**
+"Finally, monitoring closes the loop. I simulate incoming batches with increasing
+sensor drift and log the batch metrics back to MLflow. ROC-AUC drops while the
+predicted failure rate rises, which is exactly the kind of signal that would
+trigger retraining. So the final result is not just a notebook model; it is an
+end-to-end MLflow and Azure ML lifecycle demonstration."
