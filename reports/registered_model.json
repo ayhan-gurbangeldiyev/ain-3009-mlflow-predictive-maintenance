@@ -1,0 +1,9 @@
+{
+  "model_name": "PredictiveMaintenanceModel",
+  "version": "1",
+  "source_run_id": "a95e5d37-e20e-4d45-929c-fa452d5a6201",
+  "selection_metric": "roc_auc",
+  "selection_score": 0.9717985020094995,
+  "staging": "stage=Staging",
+  "production": "stage=Production"
+}

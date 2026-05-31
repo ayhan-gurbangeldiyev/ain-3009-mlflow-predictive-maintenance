@@ -1,0 +1,29 @@
+# MLflow Project definition (course week 10: MLflow Projects component).
+# Run a stage reproducibly, e.g.:
+#   mlflow run . -e train --env-manager local
+#   mlflow run . -e tune --env-manager local -P trials=20
+name: predictive-maintenance
+
+python_env: python_env.yaml
+
+entry_points:
+  train:
+    parameters:
+      data: {type: str, default: data/ai4i2020.csv}
+    command: "python src/train_models.py --data {data}"
+
+  tune:
+    parameters:
+      data: {type: str, default: data/ai4i2020.csv}
+      trials: {type: int, default: 20}
+    command: "python src/tune_model.py --data {data} --trials {trials}"
+
+  register:
+    parameters:
+      metric: {type: str, default: roc_auc}
+    command: "python src/register_model.py --metric {metric}"
+
+  monitor:
+    parameters:
+      batches: {type: int, default: 6}
+    command: "python src/monitor_model.py --batches {batches}"

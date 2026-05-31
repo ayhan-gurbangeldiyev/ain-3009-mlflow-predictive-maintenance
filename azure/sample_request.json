@@ -1,0 +1,14 @@
+{
+  "input_data": {
+    "columns": [
+      "Air temperature [K]",
+      "Process temperature [K]",
+      "Rotational speed [rpm]",
+      "Torque [Nm]",
+      "Tool wear [min]",
+      "Type"
+    ],
+    "index": [0],
+    "data": [[302.3, 311.5, 1380, 62.4, 210, "L"]]
+  }
+}

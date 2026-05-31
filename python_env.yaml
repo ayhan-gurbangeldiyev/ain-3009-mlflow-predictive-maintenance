@@ -1,0 +1,6 @@
+# Environment spec referenced by MLproject (week 10).
+python: "3.11"
+build_dependencies:
+  - pip
+dependencies:
+  - -r requirements.txt

@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+mlflow.db
+mlruns/
+data/*.zip
+PRJ-*.zip
+.DS_Store
+screenshots/.DS_Store

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Predictive Maintenance — MLOps on Azure ML + MLflow</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css">
+  <style>
+    :root { --r-main-font-size: 30px; }
+    .reveal h1 { font-size: 1.7em; }
+    .reveal h2 { font-size: 1.25em; color: #4fc3f7; }
+    .reveal table { font-size: 0.62em; }
+    .reveal table th { color: #4fc3f7; }
+    .reveal .small { font-size: 0.7em; color: #bbb; }
+    .reveal .arch { font-family: monospace; font-size: 0.6em; text-align: left; line-height: 1.5; background: #111; padding: 18px; border-radius: 8px; }
+    .reveal .hl { color: #80cbc4; font-weight: bold; }
+    .reveal .tag { color: #ffb74d; }
+  </style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+  <section>
+    <h1>Predictive Maintenance</h1>
+    <h2>End-to-End ML Lifecycle on Azure ML + MLflow</h2>
+    <p class="small">AIN-3009 Delivering AI Applications with MLOps<br>
+    Ayhan Gurbangeldiyev — 2020053</p>
+  </section>
+
+  <section>
+    <h2>Dataset & Framing</h2>
+    <ul>
+      <li><span class="hl">AI4I 2020</span>: 10,000 machine telemetry rows</li>
+      <li>Target: <code>Machine failure</code>, only <span class="hl">3.4%</span> positive</li>
+      <li>Leakage columns dropped: TWF, HDF, PWF, OSF, RNF</li>
+      <li>Metrics: <span class="hl">ROC-AUC, PR-AUC, recall, F1</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Architecture</h2>
+    <div class="arch">
+Local train + tune<br>
+&nbsp;&nbsp;│ mlflow.set_tracking_uri(<span class="tag">azureml://...</span>)<br>
+&nbsp;&nbsp;▼<br>
+<span class="hl">Azure ML Workspace</span><br>
+&nbsp;&nbsp;├─ Experiments / artifacts<br>
+&nbsp;&nbsp;├─ Model Registry<br>
+&nbsp;&nbsp;▼<br>
+<span class="hl">Managed Online Endpoint</span> → REST /score<br>
+&nbsp;&nbsp;▲<br>
+Monitoring metrics logged to MLflow
+    </div>
+    <p class="small">Training stays local for cost control; lifecycle state lives in Azure ML.</p>
+  </section>
+
+  <section>
+    <h2>Experiments & Tuning</h2>
+    <table>
+      <tr><th>Model</th><th>ROC-AUC</th><th>PR-AUC</th><th>F1</th><th>Recall</th></tr>
+      <tr><td>Logistic Regression</td><td>0.907</td><td>0.382</td><td>0.242</td><td>0.824</td></tr>
+      <tr><td>Random Forest</td><td>0.963</td><td>0.775</td><td>0.600</td><td>0.441</td></tr>
+      <tr><td><b>Gradient Boosting</b></td><td><b>0.970</b></td><td><b>0.801</b></td><td><b>0.756</b></td><td>0.662</td></tr>
+    </table>
+    <p class="small">Optuna: 20 nested MLflow trials; best CV ROC-AUC 0.974, recall about 0.77.</p>
+  </section>
+
+  <section>
+    <h2>Registry & Deployment</h2>
+    <ul>
+      <li>Best run selected by ROC-AUC</li>
+      <li>Registered as <code>PredictiveMaintenanceModel</code>, version <span class="hl">1</span></li>
+      <li>Promoted <span class="hl">Staging → Production</span></li>
+      <li>Azure endpoint: <code>predmaint-endpoint</code>, state <span class="hl">Succeeded</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Monitoring</h2>
+    <table>
+      <tr><th>Batch</th><th>ROC-AUC</th><th>F1</th><th>Pred. failure rate</th></tr>
+      <tr><td>0</td><td>0.914</td><td>0.640</td><td>4.2%</td></tr>
+      <tr><td>2</td><td>0.799</td><td>0.218</td><td>14.4%</td></tr>
+      <tr><td>5</td><td>0.766</td><td>0.092</td><td>36.9%</td></tr>
+    </table>
+    <p class="small">Increasing sensor drift produces metric degradation: a concrete retraining signal.</p>
+  </section>
+
+  <section>
+    <h2>Takeaways</h2>
+    <ul>
+      <li><span class="hl">Lifecycle &gt; model</span>: tracking, registry, serving, monitoring</li>
+      <li>Metrics must match the business problem under imbalance</li>
+      <li>Azure credit used for tracking, registry, and endpoint demo</li>
+      <li>Endpoint can be deleted after demo to control cost</li>
+    </ul>
+  </section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script>Reveal.initialize({ hash: true, slideNumber: true });</script>
+</body>
+</html>
